@@ -98,37 +98,49 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 
 // Initial position of buttons
-window.addEventListener('load', () => {
+function positionButtons() {
     yesBtn.style.left = (window.innerWidth/2 - yesBtn.offsetWidth - 10) + 'px';
     yesBtn.style.top = (window.innerHeight/2 + 50) + 'px';
 
     noBtn.style.left = (window.innerWidth/2 + 10) + 'px';
     noBtn.style.top = (window.innerHeight/2 + 50) + 'px';
-});
+}
+window.addEventListener('load', positionButtons);
+window.addEventListener('resize', positionButtons);
 
-// Move No button anywhere on screen and avoid cursor
-noBtn.addEventListener('mouseenter', (e) => {
+// Move No button anywhere on screen, avoiding cursor/touch
+function moveNoButton(x, y) {
     const btnWidth = noBtn.offsetWidth;
     const btnHeight = noBtn.offsetHeight;
-    const padding = 30; // distance from cursor
+    const padding = 30; // distance from cursor/touch
 
     const maxX = window.innerWidth - btnWidth;
     const maxY = window.innerHeight - btnHeight;
 
     let newX, newY;
-
     do {
         newX = Math.random() * maxX;
         newY = Math.random() * maxY;
     } while (
-        e.clientX > newX - padding &&
-        e.clientX < newX + btnWidth + padding &&
-        e.clientY > newY - padding &&
-        e.clientY < newY + btnHeight + padding
+        x >= newX - padding &&
+        x <= newX + btnWidth + padding &&
+        y >= newY - padding &&
+        y <= newY + btnHeight + padding
     );
 
     noBtn.style.left = newX + 'px';
     noBtn.style.top = newY + 'px';
+}
+
+// Desktop: mouse hover
+noBtn.addEventListener('mouseenter', (e) => {
+    moveNoButton(e.clientX, e.clientY);
+});
+
+// Mobile: touch
+noBtn.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    moveNoButton(touch.clientX, touch.clientY);
 });
 
 // Yes button redirects
@@ -145,7 +157,6 @@ function createHeart() {
     document.body.appendChild(heart);
     setTimeout(() => { heart.remove(); }, 4000);
 }
-
 setInterval(createHeart, 300);
 </script>
 
