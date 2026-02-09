@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #ffe0e6, #fff0f5);
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+  }
+
+  h1 {
+    color: #ff1a75;
+    font-size: 2.5em;
+    text-align: center;
+    animation: pulse 1.2s infinite alternate;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+  }
+
+  button {
+    padding: 15px 40px;
+    font-size: 1.3em;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0px 5px 15px rgba(255,0,100,0.3);
+    position: absolute; /* absolute for full-screen movement */
+  }
+
+  #yesBtn {
+    background: linear-gradient(45deg, #ff6699, #ff1a75);
+    color: white;
+  }
+
+  #noBtn {
+    background: linear-gradient(45deg, #ffccff, #ff99cc);
+    color: #ff1a75;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    transform: rotate(45deg);
+    animation: floatUp 4s linear infinite;
+    opacity: 0.7;
+  }
+
+  .heart:before, .heart:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+  }
+
+  .heart:before { top: -10px; left: 0; }
+  .heart:after { left: 10px; top: 0; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity: 0.7; }
+    100% { transform: translateY(-800px) rotate(45deg); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media(max-width: 500px){
+    h1 { font-size: 2em; }
+    button { padding: 12px 25px; font-size: 1em; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Would you be my Valentine? ❤️</h1>
+
+<button id="yesBtn">Yes</button>
+<button id="noBtn">No</button>
+
+<script>
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+
+// Initial position of buttons
+window.addEventListener('load', () => {
+    yesBtn.style.left = (window.innerWidth/2 - yesBtn.offsetWidth - 10) + 'px';
+    yesBtn.style.top = (window.innerHeight/2 + 50) + 'px';
+
+    noBtn.style.left = (window.innerWidth/2 + 10) + 'px';
+    noBtn.style.top = (window.innerHeight/2 + 50) + 'px';
+});
+
+// Move No button anywhere on screen and avoid cursor
+noBtn.addEventListener('mouseenter', (e) => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    const padding = 30; // distance from cursor
+
+    const maxX = window.innerWidth - btnWidth;
+    const maxY = window.innerHeight - btnHeight;
+
+    let newX, newY;
+
+    do {
+        newX = Math.random() * maxX;
+        newY = Math.random() * maxY;
+    } while (
+        e.clientX > newX - padding &&
+        e.clientX < newX + btnWidth + padding &&
+        e.clientY > newY - padding &&
+        e.clientY < newY + btnHeight + padding
+    );
+
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
+});
+
+// Yes button redirects
+yesBtn.addEventListener('click', () => {
+    window.location.href = 'yes.html';
+});
+
+// Floating hearts
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => { heart.remove(); }, 4000);
+}
+
+setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>

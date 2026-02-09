@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yay!</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom, #ffe0e6, #ffb3d9);
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+    color: #ff1a75;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    animation: bounce 1s infinite alternate;
+  }
+
+  p {
+    font-size: 1.5em;
+    margin-top: 0;
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+  }
+
+  .heart {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: red;
+    transform: rotate(45deg);
+    animation: floatUp 4s linear infinite;
+    opacity: 0.8;
+  }
+
+  .heart:before, .heart:after {
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: red;
+    border-radius: 50%;
+  }
+
+  .heart:before { top: -12.5px; left: 0; }
+  .heart:after { left: 12.5px; top: 0; }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity: 0.8; }
+    100% { transform: translateY(-900px) rotate(45deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Yay! ❤️</h1>
+<p>I knew you'd say yes!</p>
+
+<script>
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+    document.body.appendChild(heart);
+    setTimeout(() => { heart.remove(); }, 4000);
+}
+
+setInterval(createHeart, 200);
+</script>
+
+</body>
+</html>
